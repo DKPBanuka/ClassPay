@@ -1,7 +1,8 @@
 # ClassPay - Teacher Payment Manager
 
-![ClassPay Logo](logo.png)
-*Logo size optimized for GitHub display*
+<p align="center">
+  <img src="logo.png" alt="ClassPay Banner" width="250"/>
+</p>
 
 ## 📖 Description
 
