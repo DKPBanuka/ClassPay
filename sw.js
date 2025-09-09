@@ -1,13 +1,9 @@
-const CACHE_NAME = 'classpay-app-v2';
+const CACHE_NAME = 'classpay-app-v3';
 const urlsToCache = [
-    '/',
-    '/index.html',
-    '/manifest.json',
-    '/logo.png',
-    'https://cdn.tailwindcss.com',
-    'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Noto+Sans+Sinhala:wght@400;700&display=swap',
-    'https://fonts.gstatic.com/s/inter/v12/UcCO3FwrK3iLTeHuS_fvQtMwCp50KnMw2boKoduKmMEVuLyfAZ9hiJ-Ek-_EeA.woff2',
-    'https://fonts.gstatic.com/s/notosanssinhala/v20/AlZq_y1ZtY3ymOryg38hOCSdOnFq0En23OU.ttf'
+    './',
+    './index.html',
+    './manifest.json',
+    './logo.png'
 ];
 
 // Install a service worker
@@ -17,11 +13,19 @@ self.addEventListener('install', event => {
         caches.open(CACHE_NAME)
             .then(function(cache) {
                 console.log('ClassPay Service Worker: Cache opened');
-                return cache.addAll(urlsToCache);
+                // Cache only essential files first
+                return cache.addAll(urlsToCache).catch(error => {
+                    console.log('ClassPay Service Worker: Some files failed to cache:', error);
+                    // Continue even if some files fail
+                    return Promise.resolve();
+                });
             })
             .then(() => {
                 console.log('ClassPay Service Worker: Installation complete');
                 return self.skipWaiting();
+            })
+            .catch(error => {
+                console.log('ClassPay Service Worker: Installation failed:', error);
             })
     );
 });
@@ -53,6 +57,12 @@ self.addEventListener('fetch', event => {
         return;
     }
 
+    // Skip unsupported schemes (chrome-extension, data, blob, etc.)
+    const url = new URL(event.request.url);
+    if (url.protocol !== 'http:' && url.protocol !== 'https:') {
+        return;
+    }
+
     event.respondWith(
         caches.match(event.request)
             .then(function(response) {
@@ -74,17 +84,26 @@ self.addEventListener('fetch', event => {
                     // Clone the response
                     const responseToCache = response.clone();
 
-                    caches.open(CACHE_NAME)
-                        .then(function(cache) {
-                            cache.put(event.request, responseToCache);
-                        });
+                    // Only cache http/https requests
+                    if (url.protocol === 'http:' || url.protocol === 'https:') {
+                        caches.open(CACHE_NAME)
+                            .then(function(cache) {
+                                cache.put(event.request, responseToCache);
+                            })
+                            .catch(error => {
+                                console.log('ClassPay Service Worker: Failed to cache response:', error);
+                            });
+                    }
 
                     return response;
-                }).catch(() => {
+                }).catch(error => {
+                    console.log('ClassPay Service Worker: Fetch failed:', error);
                     // Return offline page or fallback for navigation requests
                     if (event.request.mode === 'navigate') {
-                        return caches.match('/index.html');
+                        return caches.match('./index.html');
                     }
+                    // For other requests, return a basic response
+                    return new Response('Offline', { status: 503, statusText: 'Service Unavailable' });
                 });
             })
     );
