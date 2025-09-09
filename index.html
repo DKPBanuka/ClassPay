@@ -340,8 +340,11 @@
                 </div>
 
                 <!-- Print Button -->
-                <button id="printBtn" class="w-full mt-6 neon-button text-black font-bold rounded-lg text-sm px-5 py-2.5 text-center no-print">
-                    Print Receipt
+                <button id="printBtn" class="w-full mt-6 neon-button text-black font-bold rounded-lg text-sm px-5 py-2.5 text-center no-print flex items-center justify-center gap-2">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path>
+                    </svg>
+                    Print & Save Receipt
                 </button>
             </div>
 
@@ -633,78 +636,142 @@
         }
 
         function showFirstTimeLoginPrompt() {
-            // Create a modal for first-time setup
+            // First show welcome popup
+            showWelcomePopup();
+        }
+
+        function showWelcomePopup() {
+            // Create welcome modal
+            const welcomeModal = document.createElement('div');
+            welcomeModal.id = 'welcomeModal';
+            welcomeModal.className = 'fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-2 md:p-4';
+            welcomeModal.innerHTML = `
+                <div class="glass-effect neon-border rounded-xl w-full max-w-lg mx-auto">
+                    <!-- Welcome Header -->
+                    <div class="p-6 md:p-8 text-center bg-gradient-to-r from-green-900/30 to-blue-900/30 rounded-t-xl">
+                        <!-- Welcome Icon -->
+                        <div class="w-20 h-20 mx-auto mb-6 bg-gradient-to-br from-green-400 to-blue-500 rounded-full flex items-center justify-center shadow-lg">
+                            <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
+                            </svg>
+                        </div>
+                        
+                        <!-- Welcome Title -->
+                        <h1 class="text-3xl md:text-4xl font-bold neon-text mb-4">
+                            Welcome to 
+                            <span class="bg-gradient-to-r from-green-400 to-blue-400 bg-clip-text text-transparent">
+                                ClassPay
+                            </span>
+                            ! 🎓
+                        </h1>
+                        
+                        <!-- Welcome Description -->
+                        <p class="text-base md:text-lg text-gray-300 leading-relaxed mb-6">
+                            Your professional payment management system for teachers.<br>
+                            Let's get you started with a quick setup.
+                        </p>
+                    </div>
+                    
+                    <!-- Welcome Features -->
+                    <div class="p-6 md:p-8">
+                        <div class="space-y-4 mb-8">
+                            <div class="flex items-center gap-3">
+                                <div class="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center">
+                                    <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                    </svg>
+                                </div>
+                                <span class="text-gray-300">Record student payments easily</span>
+                            </div>
+                            <div class="flex items-center gap-3">
+                                <div class="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center">
+                                    <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                    </svg>
+                                </div>
+                                <span class="text-gray-300">Generate professional receipts</span>
+                            </div>
+                            <div class="flex items-center gap-3">
+                                <div class="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center">
+                                    <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                    </svg>
+                                </div>
+                                <span class="text-gray-300">Works offline (PWA)</span>
+                            </div>
+                        </div>
+                        
+                        <!-- Get Started Button -->
+                        <button id="getStartedBtn" class="w-full neon-button text-black font-bold py-4 rounded-lg text-lg">
+                            Get Started
+                        </button>
+                    </div>
+                </div>
+            `;
+            
+            document.body.appendChild(welcomeModal);
+            document.body.classList.add('modal-open');
+            
+            // Add event listener for get started button
+            document.getElementById('getStartedBtn').addEventListener('click', () => {
+                document.body.removeChild(welcomeModal);
+                document.body.classList.remove('modal-open');
+                showTeacherSetupModal();
+            });
+        }
+
+        function showTeacherSetupModal() {
+            // Create teacher setup modal
             const firstTimeModal = document.createElement('div');
             firstTimeModal.id = 'firstTimeModal';
-            firstTimeModal.className = 'fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-2 md:p-4 overflow-y-auto modal-container';
+            firstTimeModal.className = 'fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-2 md:p-4';
             firstTimeModal.innerHTML = `
-                <div class="glass-effect neon-border rounded-xl w-full max-w-2xl mx-auto my-4 flex flex-col min-h-0">
-                    <!-- Welcome Header (Always at Top) -->
-                    <div class="p-4 md:p-6 border-b border-gray-600 bg-gradient-to-r from-green-900/20 to-blue-900/20">
-                        <div class="text-center">
-                            <!-- Welcome Icon -->
-                            <div class="w-16 h-16 mx-auto mb-4 bg-gradient-to-br from-green-400 to-blue-500 rounded-full flex items-center justify-center shadow-lg">
-                                <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
-                                </svg>
-                            </div>
-                            
-                            <!-- Welcome Title -->
-                            <h1 class="text-2xl md:text-3xl font-bold neon-text mb-3">
-                                Welcome to 
-                                <span class="bg-gradient-to-r from-green-400 to-blue-400 bg-clip-text text-transparent">
-                                    ClassPay
-                                </span>
-                                ! 🎓
-                            </h1>
-                            
-                            <!-- Welcome Description -->
-                            <p class="text-sm md:text-base text-gray-300 leading-relaxed">
-                                Your professional payment management system for teachers.<br>
-                                Let's set up your profile and add your classes to get started.
-                            </p>
-                        </div>
+                <div class="glass-effect neon-border rounded-xl w-full max-w-2xl mx-auto max-h-[90vh] flex flex-col">
+                    <!-- Header -->
+                    <div class="p-4 md:p-6 border-b border-gray-600 flex-shrink-0 bg-gradient-to-r from-green-900/20 to-blue-900/20">
+                        <h2 class="text-xl md:text-2xl font-bold neon-text text-center">Setup Your Profile</h2>
+                        <p class="text-sm text-gray-400 text-center mt-2">Complete your teacher information and add classes</p>
                     </div>
                     
                     <!-- Scrollable Content -->
-                    <div class="flex-1 p-4 md:p-6 space-y-4 md:space-y-6 overflow-y-auto">
+                    <div class="flex-1 overflow-y-auto p-4 md:p-6 space-y-4 md:space-y-6">
                     
                         <!-- Step 1: Teacher Information -->
                         <div>
-                            <h3 class="text-base md:text-lg font-semibold neon-text mb-3 flex items-center gap-2">
+                            <h3 class="text-base md:text-lg font-semibold neon-text mb-4 flex items-center gap-2">
                                 <span class="bg-green-500 text-black rounded-full w-5 h-5 md:w-6 md:h-6 flex items-center justify-center text-xs md:text-sm font-bold">1</span>
                                 Teacher Information
                             </h3>
-                            <div class="grid grid-cols-1 gap-3">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <div>
-                                    <label class="block text-sm font-medium text-gray-300 mb-1">Teacher Name</label>
-                                    <input type="text" id="firstTimeTeacherName" class="neon-input rounded-lg w-full p-2.5 md:p-3 text-sm md:text-base" placeholder="Enter your name" required>
+                                    <label class="block text-sm font-medium text-gray-300 mb-2">Teacher Name</label>
+                                    <input type="text" id="firstTimeTeacherName" class="neon-input rounded-lg w-full p-3 text-base" placeholder="Enter your name" required>
                                 </div>
                                 <div>
-                                    <label class="block text-sm font-medium text-gray-300 mb-1">Degree/Qualification</label>
-                                    <input type="text" id="firstTimeDegree" class="neon-input rounded-lg w-full p-2.5 md:p-3 text-sm md:text-base" placeholder="e.g., B.Sc. Mathematics" required>
+                                    <label class="block text-sm font-medium text-gray-300 mb-2">Degree/Qualification</label>
+                                    <input type="text" id="firstTimeDegree" class="neon-input rounded-lg w-full p-3 text-base" placeholder="e.g., B.Sc. Mathematics" required>
                                 </div>
                                 <div>
-                                    <label class="block text-sm font-medium text-gray-300 mb-1">University/Institution</label>
-                                    <input type="text" id="firstTimeUniversity" class="neon-input rounded-lg w-full p-2.5 md:p-3 text-sm md:text-base" placeholder="e.g., University of Colombo" required>
+                                    <label class="block text-sm font-medium text-gray-300 mb-2">University/Institution</label>
+                                    <input type="text" id="firstTimeUniversity" class="neon-input rounded-lg w-full p-3 text-base" placeholder="e.g., University of Colombo" required>
                                 </div>
                                 <div>
-                                    <label class="block text-sm font-medium text-gray-300 mb-1">Contact Number</label>
-                                    <input type="text" id="firstTimeContact" class="neon-input rounded-lg w-full p-2.5 md:p-3 text-sm md:text-base" placeholder="+94 77 123 4567" required>
+                                    <label class="block text-sm font-medium text-gray-300 mb-2">Contact Number</label>
+                                    <input type="text" id="firstTimeContact" class="neon-input rounded-lg w-full p-3 text-base" placeholder="+94 77 123 4567" required>
                                 </div>
                             </div>
                         </div>
 
                         <!-- Step 2: Add Classes -->
                         <div>
-                            <h3 class="text-base md:text-lg font-semibold neon-text mb-3 flex items-center gap-2">
+                            <h3 class="text-base md:text-lg font-semibold neon-text mb-4 flex items-center gap-2">
                                 <span class="bg-blue-500 text-white rounded-full w-5 h-5 md:w-6 md:h-6 flex items-center justify-center text-xs md:text-sm font-bold">2</span>
                                 Add Your Classes
                             </h3>
-                            <div class="mb-3">
-                                <div class="flex flex-col sm:flex-row gap-2">
-                                    <input type="text" id="firstTimeClassName" placeholder="Enter class name (e.g., Grade 10 Mathematics)" class="neon-input rounded-lg flex-1 p-2.5 md:p-3 text-sm md:text-base">
-                                    <button type="button" id="firstTimeAddClass" class="neon-button text-black px-3 py-2.5 md:px-4 md:py-3 rounded-lg flex items-center justify-center gap-2 text-sm md:text-base">
+                            <div class="mb-4">
+                                <div class="flex flex-col sm:flex-row gap-3">
+                                    <input type="text" id="firstTimeClassName" placeholder="Enter class name (e.g., Grade 10 Mathematics)" class="neon-input rounded-lg flex-1 p-3 text-base">
+                                    <button type="button" id="firstTimeAddClass" class="neon-button text-black px-4 py-3 rounded-lg flex items-center justify-center gap-2 text-base">
                                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
                                         </svg>
@@ -712,35 +779,35 @@
                                         <span class="sm:hidden">Add</span>
                                     </button>
                                 </div>
-                                <p class="text-xs text-gray-400 mt-2">💡 Add your class names here. You can add more later from Settings.</p>
+                                <p class="text-sm text-gray-400 mt-3">💡 Add your class names here. You can add more later from Settings.</p>
                             </div>
-                            <div id="firstTimeClassesContainer" class="space-y-2 max-h-24 md:max-h-32 overflow-y-auto">
+                            <div id="firstTimeClassesContainer" class="space-y-3 max-h-32 overflow-y-auto">
                                 <!-- Dynamic class inputs will be added here -->
                             </div>
                         </div>
 
                         <!-- Step 3: Quick Tour -->
                         <div>
-                            <h3 class="text-base md:text-lg font-semibold neon-text mb-3 flex items-center gap-2">
+                            <h3 class="text-base md:text-lg font-semibold neon-text mb-4 flex items-center gap-2">
                                 <span class="bg-purple-500 text-white rounded-full w-5 h-5 md:w-6 md:h-6 flex items-center justify-center text-xs md:text-sm font-bold">3</span>
                                 Quick Tour
                             </h3>
-                            <div class="bg-gray-800/50 rounded-lg p-3 md:p-4">
-                                <div class="space-y-2 text-xs md:text-sm text-gray-300">
-                                    <div class="flex items-center gap-2">
-                                        <span class="text-green-400">✓</span>
+                            <div class="bg-gray-800/50 rounded-lg p-4">
+                                <div class="space-y-3 text-sm text-gray-300">
+                                    <div class="flex items-center gap-3">
+                                        <span class="text-green-400 text-lg">✓</span>
                                         <span>Record student payments easily</span>
                                     </div>
-                                    <div class="flex items-center gap-2">
-                                        <span class="text-green-400">✓</span>
+                                    <div class="flex items-center gap-3">
+                                        <span class="text-green-400 text-lg">✓</span>
                                         <span>Generate professional receipts</span>
                                     </div>
-                                    <div class="flex items-center gap-2">
-                                        <span class="text-green-400">✓</span>
+                                    <div class="flex items-center gap-3">
+                                        <span class="text-green-400 text-lg">✓</span>
                                         <span>View payment history</span>
                                     </div>
-                                    <div class="flex items-center gap-2">
-                                        <span class="text-green-400">✓</span>
+                                    <div class="flex items-center gap-3">
+                                        <span class="text-green-400 text-lg">✓</span>
                                         <span>Works offline (PWA)</span>
                                     </div>
                                 </div>
@@ -759,6 +826,7 @@
             
             // Prevent body scroll when modal is open
             document.body.classList.add('modal-open');
+            document.body.style.overflow = 'hidden';
             
             // Add event listeners
             document.getElementById('saveFirstTimeSettings').addEventListener('click', saveFirstTimeSettings);
@@ -812,39 +880,40 @@
         }
 
         function saveFirstTimeSettings() {
-            const teacherName = document.getElementById('firstTimeTeacherName').value;
-            const degree = document.getElementById('firstTimeDegree').value;
-            const university = document.getElementById('firstTimeUniversity').value;
-            const contact = document.getElementById('firstTimeContact').value;
-            
-            if (!teacherName || !degree || !university || !contact) {
+                const teacherName = document.getElementById('firstTimeTeacherName').value;
+                const degree = document.getElementById('firstTimeDegree').value;
+                const university = document.getElementById('firstTimeUniversity').value;
+                const contact = document.getElementById('firstTimeContact').value;
+                
+                if (!teacherName || !degree || !university || !contact) {
                 alert('Please fill all teacher information fields.');
-                return;
-            }
-            
+                    return;
+                }
+                
             // Get custom classes
             const customClasses = Array.from(document.getElementById('firstTimeClassesContainer').querySelectorAll('input[type="text"]'))
                 .map(input => input.value.trim())
                 .filter(value => value);
             
-            // Save settings
-            const settings = {
-                id: 'teacher',
-                teacherName,
-                degree,
-                university,
-                contact,
+                // Save settings
+                const settings = {
+                    id: 'teacher',
+                    teacherName,
+                    degree,
+                    university,
+                    contact,
                 customClasses: customClasses
-            };
-            
-            saveSettingsToDB(settings);
-            updateUIWithSettings(settings);
-            
-            // Remove modal
+                };
+                
+                saveSettingsToDB(settings);
+                updateUIWithSettings(settings);
+                
+                // Remove modal
             document.body.removeChild(document.getElementById('firstTimeModal'));
             
             // Restore body scroll
             document.body.classList.remove('modal-open');
+            document.body.style.overflow = '';
             
             // Show welcome message
             showNotification('Welcome to ClassPay! Your profile has been set up successfully. You can now start recording payments!', 'success');
@@ -963,13 +1032,42 @@
 
         function removeCustomClass(button) {
             if (confirm('Are you sure you want to remove this class?')) {
-                button.parentElement.remove();
+            button.parentElement.remove();
             }
         }
 
 
         // --- Print Functionality ---
-        document.getElementById('printBtn').addEventListener('click', () => window.print());
+        document.getElementById('printBtn').addEventListener('click', () => {
+            // Generate filename based on receipt details
+            const receiptId = document.getElementById('receiptId').textContent;
+            const receiptMonth = document.getElementById('receiptMonth').textContent;
+            const receiptClass = document.getElementById('receiptClass').textContent;
+            const receiptStudent = document.getElementById('receiptStudent').textContent;
+            const receiptDate = document.getElementById('receiptDate').textContent;
+            
+            // Clean and format data for filename
+            const cleanClass = receiptClass.replace(/[^a-zA-Z0-9]/g, '').substring(0, 10);
+            const cleanStudent = receiptStudent.replace(/[^a-zA-Z0-9]/g, '').substring(0, 15);
+            const cleanMonth = receiptMonth.substring(0, 3); // First 3 letters of month
+            
+            // Create filename: Receipt_001_Jan_Grade10_JohnDoe_2024.pdf
+            const filename = `Receipt_${receiptId}_${cleanMonth}_${cleanClass}_${cleanStudent}.pdf`;
+            
+            // Set document title for printing
+            document.title = filename;
+            
+            // Show filename in console for reference
+            console.log('Saving receipt as:', filename);
+            
+            // Print the document
+            window.print();
+            
+            // Reset title after printing
+            setTimeout(() => {
+                document.title = 'ClassPay - Teacher Payment Manager';
+            }, 1000);
+        });
 
         // Set default month on page load
         (function setDefaultMonth() {
