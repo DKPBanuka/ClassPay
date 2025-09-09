@@ -1,6 +1,7 @@
 # ClassPay - Teacher Payment Manager
 
 ![ClassPay Logo](logo.png)
+*Logo size optimized for GitHub display*
 
 ## 📖 Description
 
@@ -37,7 +38,7 @@ ClassPay is a comprehensive payment management system specifically designed for 
 
 1. **Download from GitHub:**
    ```bash
-   git clone https://github.com/yourusername/classpay.git
+   git clone https://github.com/DKPBanuka/classpay.git
    cd classpay
    ```
 
@@ -120,7 +121,7 @@ ClassPay/
 ### Local Development
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/classpay.git
+git clone https://github.com/DKPBanuka/classpay.git
 cd classpay
 
 # Start local server
@@ -167,7 +168,7 @@ open http://localhost:8000
 
 ## 🐛 Bug Reporting
 
-If you encounter any bugs, please report them on the [Issues](https://github.com/yourusername/classpay/issues) page.
+If you encounter any bugs, please report them on the [Issues](https://github.com/DKPBanuka/classpay/issues) page.
 
 ## 📄 License
 
@@ -175,8 +176,9 @@ This project is licensed under the MIT License. See the [LICENSE](LICENSE) file 
 
 ## 👨‍💻 Developer
 
-**Pasindu Banuka**
+**Pasindu Banuka** ([@DKPBanuka](https://github.com/DKPBanuka))
 - BICT(Hon's)(UG) - University of Sri Jayewardenepura
+
 
 ## 🙏 Acknowledgments
 
@@ -188,7 +190,8 @@ This project is licensed under the MIT License. See the [LICENSE](LICENSE) file 
 
 If you have questions or suggestions:
 - Email: pasindubanuka155@gmail.com
-- GitHub: [@yourusername]([https://github.com/yourusername](https://github.com/DKPBanuka))
+- GitHub: [@DKPBanuka](https://github.com/DKPBanuka)
+- LinkedIn: [Pasindu Banuka](https://linkedin.com/in/pasindu-banuka-216b7133b)
 
 ---
 
