@@ -102,8 +102,11 @@
     <div class="container mx-auto p-4 md:p-6 max-w-4xl">
         <!-- Settings Button -->
         <div class="fixed top-4 right-4 z-50 no-print">
-            <button id="settingsBtn" class="neon-button text-black font-bold px-4 py-2 rounded-lg shadow-lg">
-                ⚙️ Settings
+            <button id="settingsBtn" class="neon-button text-black font-bold p-3 rounded-lg shadow-lg flex items-center justify-center" title="Settings">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                </svg>
             </button>
         </div>
 
@@ -157,10 +160,21 @@
                                     <h4 class="text-lg font-semibold neon-text border-b border-gray-600 pb-2">Custom Classes</h4>
                                     <div>
                                         <label class="block mb-2 text-sm font-medium text-gray-300">Class Names</label>
-                                        <div id="customClassesContainer" class="space-y-2">
+                                        <div class="mb-3">
+                                            <div class="flex gap-2">
+                                                <input type="text" id="newClassName" placeholder="Enter class name" class="neon-input rounded-lg flex-1 p-2.5">
+                                                <button type="button" id="addClassBtn" class="neon-button text-black px-4 py-2 rounded-lg flex items-center gap-2">
+                                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                                                    </svg>
+                                                    Add
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <div id="customClassesContainer" class="space-y-2 max-h-40 overflow-y-auto">
                                             <!-- Dynamic class inputs will be added here -->
                                         </div>
-                                        <button type="button" id="addClassBtn" class="mt-2 text-sm neon-button text-black px-3 py-1 rounded">+ Add Class</button>
+                                        <p class="text-xs text-gray-400 mt-2">💡 Add your custom class names here. These will appear in the payment form dropdown.</p>
                                     </div>
                                 </div>
 
@@ -370,6 +384,19 @@
         closeSettingsBtn.addEventListener('click', closeSettings);
         settingsForm.addEventListener('submit', saveSettings);
         addClassBtn.addEventListener('click', addCustomClass);
+        
+        // Add class on Enter key press
+        document.addEventListener('DOMContentLoaded', function() {
+            const newClassNameInput = document.getElementById('newClassName');
+            if (newClassNameInput) {
+                newClassNameInput.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') {
+                        e.preventDefault();
+                        addCustomClass();
+                    }
+                });
+            }
+        });
         
         // Close modal when clicking outside or pressing Escape
         settingsModal.addEventListener('click', (e) => {
@@ -585,70 +612,187 @@
             firstTimeModal.id = 'firstTimeModal';
             firstTimeModal.className = 'fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50';
             firstTimeModal.innerHTML = `
-                <div class="glass-effect neon-border rounded-xl p-8 max-w-md mx-auto m-4">
+                <div class="glass-effect neon-border rounded-xl p-8 max-w-2xl mx-auto m-4">
                     <div class="text-center mb-6">
                         <div class="w-16 h-16 mx-auto mb-4 bg-green-500 rounded-full flex items-center justify-center">
                             <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
                             </svg>
                         </div>
-                        <h2 class="text-2xl font-bold neon-text mb-2">Welcome to Teacher Payment System!</h2>
-                        <p class="text-gray-300">Please set up your teacher information to get started.</p>
+                        <h2 class="text-2xl font-bold neon-text mb-2">Welcome to ClassPay! 🎓</h2>
+                        <p class="text-gray-300">Let's set up your teacher profile and add your classes to get started.</p>
                     </div>
-                    <div class="space-y-4">
-                        <div>
-                            <label class="block text-sm font-medium text-gray-300 mb-2">Teacher Name</label>
-                            <input type="text" id="firstTimeTeacherName" class="neon-input rounded-lg w-full p-3" placeholder="Enter your name" required>
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-300 mb-2">Degree/Qualification</label>
-                            <input type="text" id="firstTimeDegree" class="neon-input rounded-lg w-full p-3" placeholder="e.g., B.Sc. Mathematics" required>
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-300 mb-2">University/Institution</label>
-                            <input type="text" id="firstTimeUniversity" class="neon-input rounded-lg w-full p-3" placeholder="e.g., University of Colombo" required>
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-300 mb-2">Contact Number</label>
-                            <input type="text" id="firstTimeContact" class="neon-input rounded-lg w-full p-3" placeholder="+94 77 123 4567" required>
+                    
+                    <!-- Step 1: Teacher Information -->
+                    <div class="mb-6">
+                        <h3 class="text-lg font-semibold neon-text mb-4 flex items-center gap-2">
+                            <span class="bg-green-500 text-black rounded-full w-6 h-6 flex items-center justify-center text-sm font-bold">1</span>
+                            Teacher Information
+                        </h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-300 mb-2">Teacher Name</label>
+                                <input type="text" id="firstTimeTeacherName" class="neon-input rounded-lg w-full p-3" placeholder="Enter your name" required>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-300 mb-2">Degree/Qualification</label>
+                                <input type="text" id="firstTimeDegree" class="neon-input rounded-lg w-full p-3" placeholder="e.g., B.Sc. Mathematics" required>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-300 mb-2">University/Institution</label>
+                                <input type="text" id="firstTimeUniversity" class="neon-input rounded-lg w-full p-3" placeholder="e.g., University of Colombo" required>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-300 mb-2">Contact Number</label>
+                                <input type="text" id="firstTimeContact" class="neon-input rounded-lg w-full p-3" placeholder="+94 77 123 4567" required>
+                            </div>
                         </div>
                     </div>
+
+                    <!-- Step 2: Add Classes -->
+                    <div class="mb-6">
+                        <h3 class="text-lg font-semibold neon-text mb-4 flex items-center gap-2">
+                            <span class="bg-blue-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm font-bold">2</span>
+                            Add Your Classes
+                        </h3>
+                        <div class="mb-3">
+                            <div class="flex gap-2">
+                                <input type="text" id="firstTimeClassName" placeholder="Enter class name (e.g., Grade 10 Mathematics)" class="neon-input rounded-lg flex-1 p-3">
+                                <button type="button" id="firstTimeAddClass" class="neon-button text-black px-4 py-3 rounded-lg flex items-center gap-2">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                                    </svg>
+                                    Add Class
+                                </button>
+                            </div>
+                            <p class="text-xs text-gray-400 mt-2">💡 Add your class names here. You can add more later from Settings.</p>
+                        </div>
+                        <div id="firstTimeClassesContainer" class="space-y-2 max-h-32 overflow-y-auto">
+                            <!-- Dynamic class inputs will be added here -->
+                        </div>
+                    </div>
+
+                    <!-- Step 3: Quick Tour -->
+                    <div class="mb-6">
+                        <h3 class="text-lg font-semibold neon-text mb-4 flex items-center gap-2">
+                            <span class="bg-purple-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm font-bold">3</span>
+                            Quick Tour
+                        </h3>
+                        <div class="bg-gray-800/50 rounded-lg p-4">
+                            <div class="space-y-2 text-sm text-gray-300">
+                                <div class="flex items-center gap-2">
+                                    <span class="text-green-400">✓</span>
+                                    <span>Record student payments easily</span>
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <span class="text-green-400">✓</span>
+                                    <span>Generate professional receipts</span>
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <span class="text-green-400">✓</span>
+                                    <span>View payment history</span>
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <span class="text-green-400">✓</span>
+                                    <span>Works offline (PWA)</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
                     <div class="flex gap-3 mt-6">
-                        <button id="saveFirstTimeSettings" class="flex-1 neon-button text-black font-bold py-3 rounded-lg">Save & Continue</button>
+                        <button id="saveFirstTimeSettings" class="flex-1 neon-button text-black font-bold py-3 rounded-lg">Complete Setup & Start Using ClassPay</button>
                     </div>
                 </div>
             `;
             
             document.body.appendChild(firstTimeModal);
             
-            // Add event listener for save button
-            document.getElementById('saveFirstTimeSettings').addEventListener('click', () => {
-                const teacherName = document.getElementById('firstTimeTeacherName').value;
-                const degree = document.getElementById('firstTimeDegree').value;
-                const university = document.getElementById('firstTimeUniversity').value;
-                const contact = document.getElementById('firstTimeContact').value;
-                
-                if (!teacherName || !degree || !university || !contact) {
-                    alert('Please fill all fields.');
-                    return;
+            // Add event listeners
+            document.getElementById('saveFirstTimeSettings').addEventListener('click', saveFirstTimeSettings);
+            document.getElementById('firstTimeAddClass').addEventListener('click', addFirstTimeClass);
+            
+            // Add class on Enter key press
+            document.getElementById('firstTimeClassName').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    addFirstTimeClass();
                 }
-                
-                // Save settings
-                const settings = {
-                    id: 'teacher',
-                    teacherName,
-                    degree,
-                    university,
-                    contact,
-                    customClasses: []
-                };
-                
-                saveSettingsToDB(settings);
-                updateUIWithSettings(settings);
-                
-                // Remove modal
-                document.body.removeChild(firstTimeModal);
             });
+        }
+
+        function addFirstTimeClass() {
+            const classNameInput = document.getElementById('firstTimeClassName');
+            const className = classNameInput.value.trim();
+            
+            if (!className) {
+                alert('Please enter a class name.');
+                return;
+            }
+            
+            // Check if class already exists
+            const existingClasses = Array.from(document.getElementById('firstTimeClassesContainer').querySelectorAll('input[type="text"]'))
+                .map(input => input.value.trim())
+                .filter(value => value);
+            
+            if (existingClasses.includes(className)) {
+                alert('This class name already exists.');
+                return;
+            }
+            
+            const div = document.createElement('div');
+            div.className = 'flex gap-2 items-center p-2 glass-effect neon-border rounded-lg';
+            div.innerHTML = `
+                <input type="text" value="${className}" class="neon-input rounded-lg flex-1 p-2" readonly>
+                <button type="button" onclick="removeFirstTimeClass(this)" class="bg-red-600 hover:bg-red-700 text-white px-3 py-2 rounded flex items-center gap-1">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                    </svg>
+                    Remove
+                </button>
+            `;
+            document.getElementById('firstTimeClassesContainer').appendChild(div);
+            classNameInput.value = '';
+        }
+
+        function removeFirstTimeClass(button) {
+            button.parentElement.remove();
+        }
+
+        function saveFirstTimeSettings() {
+            const teacherName = document.getElementById('firstTimeTeacherName').value;
+            const degree = document.getElementById('firstTimeDegree').value;
+            const university = document.getElementById('firstTimeUniversity').value;
+            const contact = document.getElementById('firstTimeContact').value;
+            
+            if (!teacherName || !degree || !university || !contact) {
+                alert('Please fill all teacher information fields.');
+                return;
+            }
+            
+            // Get custom classes
+            const customClasses = Array.from(document.getElementById('firstTimeClassesContainer').querySelectorAll('input[type="text"]'))
+                .map(input => input.value.trim())
+                .filter(value => value);
+            
+            // Save settings
+            const settings = {
+                id: 'teacher',
+                teacherName,
+                degree,
+                university,
+                contact,
+                customClasses: customClasses
+            };
+            
+            saveSettingsToDB(settings);
+            updateUIWithSettings(settings);
+            
+            // Remove modal
+            document.body.removeChild(document.getElementById('firstTimeModal'));
+            
+            // Show welcome message
+            showNotification('Welcome to ClassPay! Your profile has been set up successfully. You can now start recording payments!', 'success');
         }
 
         function loadSettingsToForm() {
@@ -725,22 +869,47 @@
         }
 
         function addCustomClass() {
-            const index = customClassesContainer.children.length;
-            addCustomClassInput('', index);
+            const newClassNameInput = document.getElementById('newClassName');
+            const className = newClassNameInput.value.trim();
+            
+            if (!className) {
+                alert('Please enter a class name.');
+                return;
+            }
+            
+            // Check if class already exists
+            const existingClasses = Array.from(customClassesContainer.querySelectorAll('input[type="text"]'))
+                .map(input => input.value.trim())
+                .filter(value => value);
+            
+            if (existingClasses.includes(className)) {
+                alert('This class name already exists.');
+                return;
+            }
+            
+            addCustomClassInput(className);
+            newClassNameInput.value = '';
         }
 
-        function addCustomClassInput(value = '', index) {
+        function addCustomClassInput(value = '') {
             const div = document.createElement('div');
-            div.className = 'flex gap-2';
+            div.className = 'flex gap-2 items-center p-2 glass-effect neon-border rounded-lg';
             div.innerHTML = `
-                <input type="text" value="${value}" class="neon-input rounded-lg flex-1 p-2" placeholder="Class name">
-                <button type="button" onclick="removeCustomClass(this)" class="bg-red-600 hover:bg-red-700 text-white px-3 py-2 rounded">×</button>
+                <input type="text" value="${value}" class="neon-input rounded-lg flex-1 p-2" placeholder="Class name" readonly>
+                <button type="button" onclick="removeCustomClass(this)" class="bg-red-600 hover:bg-red-700 text-white px-3 py-2 rounded flex items-center gap-1" title="Remove class">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                    </svg>
+                    Remove
+                </button>
             `;
             customClassesContainer.appendChild(div);
         }
 
         function removeCustomClass(button) {
-            button.parentElement.remove();
+            if (confirm('Are you sure you want to remove this class?')) {
+                button.parentElement.remove();
+            }
         }
 
 
