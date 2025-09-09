@@ -175,9 +175,8 @@ This project is licensed under the MIT License. See the [LICENSE](LICENSE) file 
 
 ## 👨‍💻 Developer
 
-**Chamindu Kelum**
-- BET(Hon's)(UG) - University of Sri Jayewardenepura
-- Contact: 071 3760679
+**Pasindu Banuka**
+- BICT(Hon's)(UG) - University of Sri Jayewardenepura
 
 ## 🙏 Acknowledgments
 
@@ -188,8 +187,8 @@ This project is licensed under the MIT License. See the [LICENSE](LICENSE) file 
 ## 📞 Contact
 
 If you have questions or suggestions:
-- Email: your.email@example.com
-- GitHub: [@yourusername](https://github.com/yourusername)
+- Email: pasindubanuka155@gmail.com
+- GitHub: [@yourusername]([https://github.com/yourusername](https://github.com/DKPBanuka))
 
 ---
 
